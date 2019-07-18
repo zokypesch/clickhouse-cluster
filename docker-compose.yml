@@ -3,9 +3,11 @@ version: '3'
 services:
     clickhouse-zookeeper:
         image: zookeeper
+        networks:
+            - int-net
         ports:
-            - "2181:2181"
-            - "2182:2182"
+            - 2181:2181
+            - 2182:2182
         container_name: clickhouse-zookeeper
         hostname: clickhouse-zookeeper
 
@@ -13,6 +15,9 @@ services:
         image: yandex/clickhouse-server
         hostname: clickhouse-01
         container_name: clickhouse-01
+        networks:
+            - int-net
+            - ext-net
         ports:
             - 9001:9000
         volumes:
@@ -32,6 +37,9 @@ services:
         image: yandex/clickhouse-server
         hostname: clickhouse-02
         container_name: clickhouse-02
+        networks:
+            - int-net
+            - ext-net
         ports:
             - 9002:9000
         volumes:
@@ -51,6 +59,9 @@ services:
         image: yandex/clickhouse-server
         hostname: clickhouse-03
         container_name: clickhouse-03
+        networks:
+            - int-net
+            - ext-net
         ports:
             - 9003:9000
         volumes:
@@ -70,6 +81,9 @@ services:
         image: yandex/clickhouse-server
         hostname: clickhouse-04
         container_name: clickhouse-04
+        networks:
+            - int-net
+            - ext-net
         ports:
             - 9004:9000
         volumes:
@@ -89,6 +103,9 @@ services:
         image: yandex/clickhouse-server
         hostname: clickhouse-05
         container_name: clickhouse-05
+        networks:
+            - int-net
+            - ext-net
         ports:
             - 9005:9000
         volumes:
@@ -108,6 +125,9 @@ services:
         image: yandex/clickhouse-server
         hostname: clickhouse-06
         container_name: clickhouse-06
+        networks:
+            - int-net
+            - ext-net
         ports:
             - 9006:9000
         volumes:
@@ -122,7 +142,9 @@ services:
                 hard: 262144
         depends_on:
             - "clickhouse-zookeeper"
+
 networks:
-    default:
-        external:
-            name: clickhouse-net
+    int-net:
+        internal: true
+    ext-net:
+        driver: bridge
